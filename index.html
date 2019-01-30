@@ -1,0 +1,115 @@
+<html>
+  <head>
+    <title>Divercity - Leap</title>
+    <script src="leap-0.6.4.js"></script>
+
+    <style type="text/css">  
+        .bg-image-trump {
+          background-image: url("images/trump.jpeg");
+          height: 100%; 
+          display: none;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+        }
+        .bg-image-merkel {
+          background-image: url("images/merkel.jpg");
+          height: 100%; 
+          display: none;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+        }
+    </style>
+  </head>
+    <body>
+      <video id="videoplayer" controls autoplay >
+      <source src="video/initial.mp4" type="video/mp4">
+    </video>
+    <div id="bgimagetrump" class="bg-image-trump" style> 
+      <h1 style="color:white; text-align: center;"> You are a populist </h1>
+    </div>
+    <div id="bgimagemerkel" class="bg-image-merkel" style> 
+      <h1 style="color:white; text-align: center;"> You are not a populist </h1>
+    </div>
+  </body>
+  <script>
+    var videos = ["initial.mp4", "continue.mp4", "rally.mp4", "debate.mp4", "interview.mp4", "vote.mp4","pop_won.mp4",];
+    var alternate_videos = ["initial.mp4", "continue.mp4", "rally.mp4", "debate_nonp.mp4","interview_nonp.mp4", "vote.mp4", "pop_lost.mp4"];
+    var current_video = 0;
+    var votes = 0;
+    var vid = document.getElementById("videoplayer");
+    gesture = false;
+      Leap.loop(function(frame) {
+        var handIds = {};
+        gesture = false;
+        if (frame.hands === undefined ) {
+          var handsLength = 0
+          gesture = false;
+        } else {
+          var handsLength= frame.hands.length;
+          if(frame.hands[0]){
+            console.log(frame.hands[0].fingers[0].extended, frame.hands[0].fingers[1].extended,
+              frame.hands[0].fingers[2].extended, frame.hands[0].fingers[3].extended,
+              frame.hands[0].fingers[4].extended);
+            if(frame.hands[0].fingers[0].extended == true && frame.hands[0].fingers[1].extended == true && frame.hands[0].fingers[2].extended == true && frame.hands[0].fingers[3].extended == true && frame.hands[0].fingers[4].extended == true){
+                 gesture = true;
+            }else{
+                gesture = false;
+            }
+          }
+        }
+      });
+
+      document.onkeypress = function (e) {
+        e = e || window.event;
+        // y for yes or n for no
+        if (e.keyCode === 121){
+          gesture = true;
+        }else if (e.keyCode === 110){
+          gesture = false;
+        }
+      };
+     
+
+      var interval =window.setInterval(function(){
+        if(vid.currentTime >= vid.duration - 2){        
+          if(current_video < 6){           
+              if(gesture == true){                
+                if(current_video > 1) {
+                  //first two videos are intro and practice
+                  votes += 1;
+                }
+                current_video +=1;
+                console.log("vote:"+ votes)
+                vid.src = "video/" + videos[current_video];
+                vid.play();
+                gesture = false;
+              }
+              else if(vid.currentTime == vid.duration){
+                if(current_video > 1) {
+                  current_video +=1;
+                  vid.src = "video/" + alternate_videos[current_video];   
+                  vid.play();
+                  gesture = false;
+                }         
+              } 
+           
+          }
+          else {
+              if(vid.currentTime == vid.duration){
+                vid.remove();
+                if(votes <=2 ){
+                  var bgimage = document.getElementById("bgimagemerkel");
+                  bgimage.style.display = "block"
+                }else{
+                  var bgimage = document.getElementById("bgimagetrump");
+                  bgimage.style.display = "block"
+                }
+                clearInterval(interval);
+              }
+          }
+        }
+      }, 1000);   
+</script>
+</html>
