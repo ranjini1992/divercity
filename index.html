@@ -5,7 +5,7 @@
 
     <style type="text/css">  
         .bg-image-trump {
-          background-image: url("images/trump.jpeg");
+          background-image: url("images/trump.jpg");
           height: 100%; 
           display: none;
           background-position: center;
@@ -27,17 +27,25 @@
       <source src="video/initial.mp4" type="video/mp4">
     </video>
     <div id="bgimagetrump" class="bg-image-trump" style> 
-      <h1 style="color:white; text-align: center;"> You are a populist </h1>
+      <h1 style="color:white; padding: 1em"> You are a populist </h1>
+      <h3 style="color:white; padding: 1em; max-width: 30%;"> You supported hollow and divisive statements which provided oversimplified solutions to complex problems. <br><br>
+      Populist leaders blame the establishment and the elites and claim to represent the interests of the real people. <br><br> 
+      The president of the United States, Donald Trump is a right wing politician whose policies are populist and nationalist. He has referred to his public speaking style as "truthful hyperbole, an innocent form of exaggeration and a very effective form of promotion".</h3>
     </div>
     <div id="bgimagemerkel" class="bg-image-merkel" style> 
-      <h1 style="color:white; text-align: center;"> You are not a populist </h1>
+      <h1 style="color:white; padding: 1em"> You are not a populist </h1>
+      <h3 style="color:white; padding: 1em; max-width: 30%;">  You did not support the populist rhetoric and you showed support to the leader who acknowledges that policy changes are not easy.<br><br>
+      Populist leaders blame the establishment and claim to represent the interests of the real people. <br><br>
+      The chancellor of Germany, Angela Merkel has been a centre-right wing leader who has stayed away from populist tactics and focussed on negotiation and building consensus.</h3>
     </div>
   </body>
   <script>
     var videos = ["initial.mp4", "continue.mp4", "rally.mp4", "debate.mp4", "interview.mp4", "vote.mp4","pop_won.mp4",];
     var alternate_videos = ["initial.mp4", "continue.mp4", "rally.mp4", "debate_nonp.mp4","interview_nonp.mp4", "vote.mp4", "pop_lost.mp4"];
+    var ispopulist = true;
     var current_video = 0;
-    var votes = 0;
+    var pop_votes = 0;
+    var nonp_votes = 0;
     var vid = document.getElementById("videoplayer");
     gesture = false;
       Leap.loop(function(frame) {
@@ -77,19 +85,38 @@
           if(current_video < 6){           
               if(gesture == true){                
                 if(current_video > 1) {
+                  current_video +=1;
                   //first two videos are intro and practice
-                  votes += 1;
+                  if(ispopulist){
+                    pop_votes += 1;
+                    console.log("vote:"+ pop_votes)
+                    vid.src = "video/" + videos[current_video];
+                  }else{
+                    nonp_votes += 1;
+                    console.log("non populist vote:"+ nonp_votes)
+                    vid.src = "video/" + alternate_videos[current_video];
+                  }
+                }else{
+                  current_video +=1;
+                  vid.src = "video/" + videos[current_video];
                 }
-                current_video +=1;
-                console.log("vote:"+ votes)
-                vid.src = "video/" + videos[current_video];
                 vid.play();
                 gesture = false;
               }
               else if(vid.currentTime == vid.duration){
                 if(current_video > 1) {
                   current_video +=1;
-                  vid.src = "video/" + alternate_videos[current_video];   
+                  if(ispopulist) {
+                    nonp_votes += 1;
+                    console.log("non populist vote:"+ nonp_votes)
+                    ispopulist = false;
+                    vid.src = "video/" + alternate_videos[current_video];   
+                  } else{
+                    pop_votes += 1;
+                    console.log("vote:"+ pop_votes)
+                    ispopulist = true;
+                    vid.src = "video/" + videos[current_video];   
+                  }        
                   vid.play();
                   gesture = false;
                 }         
@@ -99,7 +126,7 @@
           else {
               if(vid.currentTime == vid.duration){
                 vid.remove();
-                if(votes <=2 ){
+                if(pop_votes < nonp_votes ){
                   var bgimage = document.getElementById("bgimagemerkel");
                   bgimage.style.display = "block"
                 }else{
