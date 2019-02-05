@@ -26,14 +26,14 @@
       <source src="video/intro.mp4" type="video/mp4">
     </video>
     <div id="bgimagetrump" class="bg-image-trump" style> 
-      <h1 style="color:white; padding: 1em; font-size:2.5vw; font-family: Cambria, serif;"> You fell for a populist leader </h1>
-      <p style="color:white; padding: 1.5em; max-width: 30%; font-size:1.5vw;"> You supported hollow and divisive statements which provided oversimplified solutions to complex problems. <br><br>
+      <h1 style="color:white; font-size:2.5vw; padding-top: 2em; padding-left: 1em; font-family: Times New Roman;" > You Fell for a Populist Leader </h1>
+      <p style="color:white; padding: 1.5em; max-width: 35%; font-size:1.5vw; font-family: Helvetica;"> You supported hollow and divisive statements which provided oversimplified solutions to complex problems. <br><br>
       Populist leaders blame the establishment and the elites and claim to represent the interests of the real people. <br><br> 
       The president of the United States, Donald Trump is a right wing politician whose policies are populist and nationalist. He has referred to his public speaking style as "truthful hyperbole, an innocent form of exaggeration and a very effective form of promotion".</p>
     </div>
     <div id="bgimagemerkel" class="bg-image-merkel" style> 
-      <h1 style="color:white; padding: 1em; font-size:2.5vw; font-family: Cambria, serif;"> You did not fall for a populist leader </h1>
-      <h3 style="color:white; padding: 1.5em; max-width: 30%; font-size:1.5vw;">  You did not support the populist rhetoric and you showed support to the leader who acknowledges that policy changes are not easy.<br><br>
+      <h1 style="color:white; padding-top: 2em; padding-left: 1em; font-size:2.5vw; font-family: Times New Roman;"> You Did Not Fall for a Populist Leader </h1>
+      <h3 style="color:white; padding: 1.5em; max-width: 35%; font-size:1.5vw; font-family: Helvetica;">  You did not support the populist rhetoric and you showed support to the leader who acknowledges that policy changes are not easy.<br><br>
       Populist leaders blame the establishment and claim to represent the interests of the real people. <br><br>
       The chancellor of Germany, Angela Merkel has been a centre-right wing leader who has stayed away from populist tactics and focussed on negotiation and building consensus.</h3>
     </div>
@@ -79,7 +79,7 @@
       };
      
 
-     var interval =window.setInterval(function(){
+ /*    var interval =window.setInterval(function(){
         if(vid.currentTime >= vid.duration - 2){        
           if(current_video < 8){           
               if(gesture == true){                
@@ -132,7 +132,7 @@
           }
           else {
               if(vid.currentTime == vid.duration){
-                vid.remove();
+                vid.remove(); */
                 if(pop_votes < nonp_votes ){
                   var bgimage = document.getElementById("bgimagemerkel");
                   bgimage.style.display = "block"
@@ -141,9 +141,9 @@
                   bgimage.style.display = "block"
                 }
                 clearInterval(interval);
-              }
+       /*       }
           }
         }
-      }, 1000); 
+      }, 1000); */
 </script>
 </html>
