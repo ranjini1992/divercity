@@ -33,9 +33,9 @@
     </div>
     <div id="bgimagemerkel" class="bg-image-merkel" style> 
       <h1 style="color:white; padding-top: 2em; padding-left: 1em; font-size:2.5vw; font-family: Times New Roman;"> You Did Not Fall for a Populist Leader </h1>
-      <h3 style="color:white; padding: 1.5em; max-width: 35%; font-size:1.5vw; font-family: Helvetica;">  You did not support the populist rhetoric and you showed support to the leader who acknowledges that policy changes are not easy.<br><br>
+      <p style="color:white; padding: 1.5em; max-width: 35%; font-size:1.5vw; font-family: Helvetica;">  You did not support the populist rhetoric and you showed support to the leader who acknowledges that policy changes are not easy.<br><br>
       Populist leaders blame the establishment and claim to represent the interests of the real people. <br><br>
-      The chancellor of Germany, Angela Merkel has been a centre-right wing leader who has stayed away from populist tactics and focussed on negotiation and building consensus.</h3>
+      The chancellor of Germany, Angela Merkel has been a centre-right wing leader who has stayed away from populist tactics and focussed on negotiation and building consensus.</p>
     </div>
   </body>
   <script>
@@ -46,13 +46,16 @@
     var pop_votes = 0;
     var nonp_votes = 0;
     var vid = document.getElementById("videoplayer");
-    var gesture = false;
+    var palm_gesture = false;
+    var fist_gesture = false;
     Leap.loop({background: true}, function(frame) {
         var handIds = {};
-        gesture = false;
+        palm_gesture = false;
+        fist_gesture = false;
         if (frame.hands === undefined ) {
           var handsLength = 0
-          gesture = false;
+          palm_gesture = false;
+          fist_gesture = false;
         } else {
           var handsLength= frame.hands.length;
           if(frame.hands[0]){
@@ -60,9 +63,14 @@
               frame.hands[0].fingers[2].extended, frame.hands[0].fingers[3].extended,
               frame.hands[0].fingers[4].extended);
             if(frame.hands[0].fingers[0].extended == true && frame.hands[0].fingers[1].extended == true && frame.hands[0].fingers[2].extended == true && frame.hands[0].fingers[3].extended == true && frame.hands[0].fingers[4].extended == true){
-                 gesture = true;
+                 palm_gesture = true;
+                 fist_gesture = false;
+            }else if(frame.hands[0].fingers[0].extended == false && frame.hands[0].fingers[1].extended == false && frame.hands[0].fingers[2].extended == false && frame.hands[0].fingers[3].extended == false && frame.hands[0].fingers[4].extended == false){
+                fist_gesture = true;
+                palm_gesture = false;
             }else{
-                gesture = false;
+                fist_gesture = false;
+                palm_gesture = false;
             }
           }
         }
@@ -72,9 +80,14 @@
         e = e || window.event;
         // y for yes or n for no
         if (e.keyCode === 121){
-          gesture = true;
+          palm_gesture = true;
+          fist_gesture = false;
         }else if (e.keyCode === 110){
-          gesture = false;
+          fist_gesture = true;
+          palm_gesture = false;
+        }else{
+          fist_gesture = false;
+          palm_gesture = false;
         }
       };
      
@@ -82,7 +95,7 @@
      var interval =window.setInterval(function(){
         if(vid.currentTime >= vid.duration - 2){        
           if(current_video < 8){           
-              if(gesture == true){                
+              if(palm_gesture == true){                
                 if(current_video > 1) {
                   current_video +=1;
                   //first two videos are intro and practice
@@ -104,28 +117,32 @@
                   vid.src = "video/" + videos[current_video];
                 }
                 vid.play();
-                gesture = false;
+                palm_gesture = false;
               }
-              else if(vid.currentTime >= (vid.duration - 2) && gesture == false|| vid.currentTime == vid.duration){
+              else{ 
+                //|| vid.currentTime == vid.duration){
                 if(current_video > 1) {
-                  current_video +=1;
-                  if(ispopulist) {
-                    nonp_votes += 1;
-                    console.log("non populist vote:"+ nonp_votes)
-                    ispopulist = false;
-                    vid.src = "video/" + alternate_videos[current_video];   
-                  } else{
-                    pop_votes += 1;
-                    console.log("vote:"+ pop_votes)
-                    ispopulist = true;
-                    if(current_video == 8){
-                      vid.src = "video/" + alternate_videos[current_video];
-                    }else{
-                      vid.src = "video/" + videos[current_video]; 
-                    }  
-                  }        
-                  vid.play();
-                  gesture = false;
+                  vid.pause();
+                  if(fist_gesture == true){
+                    current_video +=1;
+                    if(ispopulist) {
+                      nonp_votes += 1;
+                      console.log("non populist vote:"+ nonp_votes)
+                      ispopulist = false;
+                      vid.src = "video/" + alternate_videos[current_video];   
+                    } else{
+                      pop_votes += 1;
+                      console.log("vote:"+ pop_votes)
+                      ispopulist = true;
+                      if(current_video == 8){
+                        vid.src = "video/" + alternate_videos[current_video];
+                      }else{
+                        vid.src = "video/" + videos[current_video]; 
+                      }  
+                    }        
+                    vid.play();
+                    fist_gesture = false;
+                  }
                 }         
               } 
            
