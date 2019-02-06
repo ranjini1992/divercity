@@ -30,15 +30,20 @@
       <p style="color:white; padding: 1.5em; max-width: 35%; font-size:1.5vw; font-family: Helvetica;"> You supported hollow and divisive statements which provided oversimplified solutions to complex problems. <br><br>
       Populist leaders blame the establishment and the elites and claim to represent the interests of the real people. <br><br> 
       The president of the United States, Donald Trump is a right wing politician whose policies are populist and nationalist. He has referred to his public speaking style as "truthful hyperbole, an innocent form of exaggeration and a very effective form of promotion".</p>
+      <div id="output" style="color:white; padding-left: 1.5em; max-width: 35%; font-size:1.5vw; font-family: Helvetica;"></div>
     </div>
     <div id="bgimagemerkel" class="bg-image-merkel" style> 
       <h1 style="color:white; padding-top: 2em; padding-left: 1em; font-size:2.5vw; font-family: Times New Roman;"> You Did Not Fall for a Populist Leader </h1>
       <p style="color:white; padding: 1.5em; max-width: 35%; font-size:1.5vw; font-family: Helvetica;">  You did not support the populist rhetoric and you showed support to the leader who acknowledges that policy changes are not easy.<br><br>
       Populist leaders blame the establishment and claim to represent the interests of the real people. <br><br>
       The chancellor of Germany, Angela Merkel has been a centre-right wing leader who has stayed away from populist tactics and focussed on negotiation and building consensus.</p>
+      <div id="output" style="color:white; padding-left: 1.5em; max-width: 35%; font-size:1.5vw; font-family: Helvetica;"></div>
     </div>
   </body>
   <script>
+
+    
+
     var videos = ["intro.mp4", "continue.mp4", "rally.mp4", "debate.mp4", "interview.mp4", "family.mp4", "friends.mp4", "vote.mp4", "pop_won.mp4",];
     var alternate_videos = ["intro.mp4", "continue.mp4", "rally.mp4", "debate_nonp.mp4","interview_nonp.mp4", "family_nonp.mp4", "friends_nonp.mp4", "vote.mp4", "pop_lost.mp4"];
     var ispopulist = true;
@@ -48,6 +53,7 @@
     var vid = document.getElementById("videoplayer");
     var palm_gesture = false;
     var fist_gesture = false;
+
     Leap.loop({background: true}, function(frame) {
         var handIds = {};
         palm_gesture = false;
@@ -150,15 +156,17 @@
                 vid.remove(); 
                 if(pop_votes < nonp_votes ){
                   var bgimage = document.getElementById("bgimagemerkel");
-                  bgimage.style.display = "block"
+                  bgimage.style.display = "block";
+                  document.getElementById("output").textContent = "You voted " + pop_votes + " times for the populist and " + nonp_votes + " times for the non-populist.";
                 }else{
                   var bgimage = document.getElementById("bgimagetrump");
-                  bgimage.style.display = "block"
+                  bgimage.style.display = "block";
+                  document.getElementById("output").textContent = "You voted " + pop_votes + " times for the populist and " + nonp_votes + " times for the non-populist.";
                 }
                 clearInterval(interval);
               }
           }
         }
-      }, 1000); 
+      }, 1000);
 </script>
 </html>
