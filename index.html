@@ -119,10 +119,8 @@
                 vid.play();
                 palm_gesture = false;
               }
-              else{ 
-                //|| vid.currentTime == vid.duration){
+              else if(vid.currentTime == vid.duration){ 
                 if(current_video > 1) {
-                  vid.pause();
                   if(fist_gesture == true){
                     current_video +=1;
                     if(ispopulist) {
